@@ -23,8 +23,12 @@ int main(int argc, const char * argv[])
    if (argc < 2) {
       LOG(WARNING) << "DDirWatcher" << "No config file specified! Give config file name as startup parameter.";
    } else {
-      DDirWatcher watcher(argv[0], argv[1]);
-      watcher.run();
+      try {
+         DDirWatcher watcher(argv[0], argv[1]);
+         watcher.run();
+      } catch (const std::exception & e) {
+         LOG(INFO) << "Something went wrong: " << e.what();
+      }
    }
    
    LOG(INFO) << "DDirWatcher" << "--- Node closed ---";

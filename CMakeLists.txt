@@ -9,7 +9,11 @@ include(CMakePackageConfigHelpers)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-set(SOURCES main.cpp DDirWatcher.hpp DDirWatcher.cpp DDirWatcherHandler.hpp DDirWatcherHandler.cpp)
+set(SOURCES main.cpp
+   DDirWatcher.hpp DDirWatcher.cpp
+   DDirWatcherHandler.hpp DDirWatcherHandler.cpp
+   DDirWatcherMarshallerHandler.hpp DDirWatcherMarshallerHandler.cpp
+   DDirWatcherDataItem.hpp DDirWatcherDataItem.cpp)
 add_executable(${BIN_NAME} ${SOURCES})
 
 # target_sources(${BIN_NAME} PRIVATE ${SOURCES})

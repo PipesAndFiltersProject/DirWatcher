@@ -16,6 +16,7 @@
 #include <OHARBaseLayer/Package.h>
 
 #include "DDirWatcherHandler.hpp"
+#include "DDirWatcherDataItem.hpp"
 
 const std::string DDirWatcherHandler::TAG{"DirWatcher"};
 
@@ -49,18 +50,30 @@ DDirWatcherHandler::~DDirWatcherHandler() {
 }
 
 bool DDirWatcherHandler::consume(OHARBase::Package & data) {
-   return DataHandler::consume(data);
+   return false;
 }
 
 void DDirWatcherHandler::processEvents(const std::vector<fsw::event> & events) {
    LOG(INFO) << TAG << "Event from fsw arrived!";
-   std::vector<std::pair<std::string, std::string>> notifications;
-   std::vector<std::string> eventFlagNames;
-   for (const fsw::event & event : events) {
-      std::vector<fsw_event_flag> flags = event.get_flags();
-      for (fsw_event_flag flag : flags) {
-         eventFlagNames.push_back(fsw::event::get_event_flag_name(flag));
+   try {
+      std::vector<std::string> eventFlagNames;
+      for (const fsw::event & event : events) {
+         std::vector<fsw_event_flag> flags = event.get_flags();
+         for (fsw_event_flag flag : flags) {
+            eventFlagNames.push_back(fsw::event::get_event_flag_name(flag));
+         }
+         LOG(INFO) << TAG << "Change in " << event.get_path();
+         std::unique_ptr<DDirWatcherDataItem> dataItem;
+         dataItem->setChangedItemName(event.get_path());
+         dataItem->setChangeEvents(eventFlagNames);
+         LOG(INFO) << TAG << "Creating a Package";
+         OHARBase::Package package;
+         package.setType(OHARBase::Package::Type::Data);
+         package.setDataItem(dataItem.release());
+         LOG(INFO) << TAG << "Passing package to the handlers";
+         myNode.passToNextHandlers(this, package);
       }
-      LOG(INFO) << TAG << "Change in " << event.get_path();
+   } catch (const std::exception & e) {
+      myNode.errorInData(e.what()); // Logging done there too.
    }
 }
