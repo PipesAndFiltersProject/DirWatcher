@@ -12,8 +12,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 set(SOURCES main.cpp
    DDirWatcher.hpp DDirWatcher.cpp
    DDirWatcherHandler.hpp DDirWatcherHandler.cpp
+   DDirWatcherInputHandler.hpp DDirWatcherInputHandler.cpp
+   DDirWatcherOutputHandler.hpp DDirWatcherOutputHandler.cpp
    DDirWatcherMarshallerHandler.hpp DDirWatcherMarshallerHandler.cpp
    DDirWatcherDataItem.hpp DDirWatcherDataItem.cpp)
+
 add_executable(${BIN_NAME} ${SOURCES})
 
 # target_sources(${BIN_NAME} PRIVATE ${SOURCES})
@@ -28,8 +31,9 @@ find_package(g3logger REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(fswatch REQUIRED)
 find_package(OHARBaseLayer REQUIRED)
+find_package(tinyxml2 REQUIRED)
 
-target_include_directories(${BIN_NAME} PUBLIC ${g3log_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS})
+target_include_directories(${BIN_NAME} PUBLIC ${g3log_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${tinyxml2_INCLUDE_DIRS})
 
-target_link_libraries(${BIN_NAME} ${g3log_LIBRARIES} ${fswatch_LIBRARIES} OHARBaseLayer::OHARBaseLayer)
+target_link_libraries(${BIN_NAME} ${g3log_LIBRARIES} ${fswatch_LIBRARIES} tinyxml2::tinyxml2 OHARBaseLayer::OHARBaseLayer)
 

@@ -5,25 +5,44 @@
 //  Created by Antti Juustila on 15.2.2018.
 //  Copyright (c) 2018 Antti Juustila. All rights reserved.
 //
+#pragma once
 
 #include <OHARBaseLayer/DataItem.h>
 
+#include <nlohmann/json.hpp>
 
-class DDirWatcherDataItem : public OHARBase::DataItem {
+namespace DirWatcher {
    
-public:
-   DDirWatcherDataItem();
-   virtual ~DDirWatcherDataItem();
-
-   void setChangedItemName(const std::string & name);
-   void setChangeEvents(std::vector<std::string> & events);
    
-   const std::string & getChangedItemName() const;
-   const std::vector<std::string> getChangeEvents() const;
+   class DDirWatcherDataItem : public OHARBase::DataItem {
+      
+   public:
+      DDirWatcherDataItem();
+      DDirWatcherDataItem(const DDirWatcherDataItem & another);
+      virtual ~DDirWatcherDataItem();
+      
+      bool parse(const std::string &, const std::string &) override;
+      bool addFrom(const OHARBase::DataItem &another) override;
+      OHARBase::DataItem *copy() const override;
+      
+      void setWhoChanged(const std::vector<std::string> & names);
+      void addWhoChanged(const std::string & name);
+      void setChangeEvents(const std::vector<std::pair<std::string,int>> & events);
+      void addChangeEvents(const std::vector<std::pair<std::string,int>> & events);
+      void addChangeEvents(const std::vector<std::string> & events);
+      void addChangeEvent(const std::string & event);
+      
+      const std::vector<std::string> & getWhoChanged() const;
+      const std::vector<std::pair<std::string,int>> getChangeEvents() const;
+      
+   private:
+      
+      std::vector<std::string> whoChanged;
+      std::vector<std::pair<std::string,int>> changeEvents;
+      const static std::string TAG;
+   };
    
-private:
-
-   std::string changedItem;
-   std::vector<std::string> changeEvents;
-   const static std::string TAG;
-};
+   void to_json(nlohmann::json & j, const DDirWatcherDataItem & data);
+   void from_json(const nlohmann::json & j, DDirWatcherDataItem & data);
+   
+} // namespace

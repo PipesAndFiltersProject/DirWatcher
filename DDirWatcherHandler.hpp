@@ -5,6 +5,7 @@
 //  Created by Antti Juustila on 15.2.2018.
 //  Copyright (c) 2018 Antti Juustila. All rights reserved.
 //
+#pragma once
 
 #include <OHARBaseLayer/DataHandler.h>
 
@@ -14,21 +15,27 @@ namespace fsw {
    class event;
 }
 
-class DDirWatcherHandler : public OHARBase::DataHandler {
+namespace DirWatcher {
    
-public:
-   DDirWatcherHandler(OHARBase::ProcessorNode & node);
-   virtual ~DDirWatcherHandler();
    
-   bool consume(OHARBase::Package & data) override;
+   class DDirWatcherHandler : public OHARBase::DataHandler {
+      
+   public:
+      DDirWatcherHandler(OHARBase::ProcessorNode & node);
+      virtual ~DDirWatcherHandler();
+      
+      bool consume(OHARBase::Package & data) override;
+      
+      void processEvents(const std::vector<fsw::event> & events);
+      
+   private:
+      OHARBase::ProcessorNode & myNode;
+      fsw::monitor * directoryMonitor;
+      std::string userToReport;
+      std::string pathToObserve;
+      const static std::string TAG;
+      std::thread * monitorThread;
+      bool running;
+   };
    
-   // void fswEventCallback(const std::vector< fsw::event > & events, void * ptr);
-   void processEvents(const std::vector<fsw::event> & events);
-   
-private:
-   OHARBase::ProcessorNode & myNode;
-   fsw::monitor * directoryMonitor;
-   std::string userToReport;
-   std::string pathToObserve;
-   const static std::string TAG;
-};
+} // namespace
