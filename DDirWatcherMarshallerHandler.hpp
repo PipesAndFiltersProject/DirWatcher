@@ -25,15 +25,22 @@ namespace DirWatcher {
       bool consume(OHARBase::Package & data) override;
       
    private:
+      friend class XMLMarshaller;
+      friend class JSONMarshaller;
+      class MarshallerInterface {
+      public:
+         virtual ~MarshallerInterface() {};
+         virtual bool prepare(std::list<DDirWatcherDataItem*> & buffer) = 0;
+         virtual bool save(const std::string & fileName) = 0;
+      };
       void addOrUpdateDataItem(DDirWatcherDataItem * item);
-      bool prepareTree(tinyxml2::XMLDocument & tree);
-      bool save(tinyxml2::XMLDocument & tree);
       
    private:
       OHARBase::ProcessorNode & myNode;
       const static std::string TAG;
       std::list<DDirWatcherDataItem*> buffer;
       int bufCapacity;
+      MarshallerInterface * marshaller;
    };
    
 } // namespace
