@@ -117,14 +117,13 @@ namespace DirWatcher {
       }
       const std::string format = myNode.getConfigItemValue("marshal");
       if (format == "xml") {
-         marshaller = new XMLMarshaller();
+         marshaller = std::unique_ptr<MarshallerInterface>(new XMLMarshaller());
       } else if (format == "json") {
-         marshaller = new JSONMarshaller();
+         marshaller = std::unique_ptr<MarshallerInterface>(new JSONMarshaller());
       }
    }
    
    DDirWatcherMarshallerHandler::~DDirWatcherMarshallerHandler() {
-      delete marshaller;
    }
    
    bool DDirWatcherMarshallerHandler::consume(OHARBase::Package & data) {

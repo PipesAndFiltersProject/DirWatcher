@@ -40,7 +40,7 @@ namespace DirWatcher {
       const static std::string TAG;
       std::list<DDirWatcherDataItem*> buffer;
       int bufCapacity;
-      MarshallerInterface * marshaller;
+      std::unique_ptr<MarshallerInterface> marshaller;
    };
    
 } // namespace
