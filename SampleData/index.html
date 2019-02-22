@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Who is doing what</title>
+      <style>
+         table, th, td {
+            border: 1px solid gray;
+            border-collapse:collapse;
+         }
+      th, td {
+         padding: 5px;
+      }
+      </style>
+   </head>
+   <body onload="startLoading()">
+      <h1>Who is doing what?</h1>
+      <p>File events reported by DDirWatcher app.</p>
+      <p id="eventinfo"></p>
+      <p><button onclick="reload()">Start</button></p>
+      <table id="events"></table>
+      
+      <script>
+         function loadXMLDoc() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+               if (this.readyState == 4 && (this.status == 200 || this.status == 0)) {
+                  myFunction(this);
+               }
+            };
+            xmlhttp.open("GET", "Events.xml", true);
+            xmlhttp.setRequestHeader("Cache-Control", "no-cache");
+            xmlhttp.setRequestHeader("Pragma", "no-cache");
+            xmlhttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
+            xmlhttp.send();
+         }
+         function myFunction(xml) {
+            var i;
+            var xmlDoc = xml.responseXML;
+            var table="<tr><th>File</th><th>User(s)</th><th>Event(s) -- <i>Type: count</i></th></tr>";
+            var x = xmlDoc.getElementsByTagName("target");
+            var counterText = "There are " + x.length + " file events currently.";
+            document.getElementById("eventinfo").innerHtml = counterText;
+            for (i = 0; i <x.length; i++) {
+               table += "<tr><td>" +
+               x[i].getAttribute("name") +
+               "</td><td>" +
+               getValues(x[i].getElementsByTagName("user"), "") +
+               "</td><td>" +
+               getValues(x[i].getElementsByTagName("event"), "type") +
+               "</td></tr>";
+            }
+            document.getElementById("events").innerHTML = table;
+         }
+         function startLoading() {
+            loadXMLDoc();
+            setInterval(loadXMLDoc, 5000);
+         }
+         function reload() {
+            loadXMLDoc();
+         }
+         function getValues(elements, attr) {
+            var list = "";
+            for (j = 0; j < elements.length; j++) {
+               if (j > 0) {
+                  list += ", ";
+               }
+               if (attr.length > 0) {
+                  list += elements[j].getAttribute(attr) + ": ";
+               }
+               list += elements[j].childNodes[0].nodeValue;
+            }
+            return list;
+         }
+      </script>
+      
+   </body>
+</html>

@@ -1,6 +1,6 @@
 # DDirWatcher
 
-DDirWatcher is another demonstration of how `BaseLayer` can be used to create distributed systems based on the selected architectural style. It took about 2 working days (within 4-5 calendar days) to implement DDirWatcher. At least a half day was wasted in trying to get `boost::property_tree` to do the XML marshalling, so that time could have been saved if a wiser selection had been made in the beginning.
+DDirWatcher is another demonstration of how `BaseLayer` can be used to create distributed systems based on the selected architectural style. It took about 2 working days (within 4-5 calendar days) to implement DDirWatcher. At least a half day was wasted in trying to get `boost::property_tree` to do the XML marshalling, so that time could have been saved if a wiser selection had been made in the beginning. After struggling with property_tree, I switched to using tinyxml2 library which was better in this case.
 
 A usage scenario for DDirWatcher could be that a group of software developers in an office space want to be explicitly aware of who is working with which components of the system. Of course you can always check the git for committed changes in the git server. But what about those changes which haven't yet been committed? So each developer installs the DDirWatcher node as a service in the development machine. The directory with the source code is then set as the `target`. A developer server hosts the last node. The last node then creates an XML file, which is included in a dynamic web page. Every time the XML file changes, the dynamic page refreshes the content of the page, including the most recent file changes in developers' local computers. The developer server has a large display which everyone can see and take a look when having a break or coffee, to see who is working on what. Those who are working remotely, can also view the web page.
 
@@ -42,11 +42,11 @@ Last node configuration example file looks like this:
 nodeconfiguration
 input	127.0.0.1:33333
 user	pentti
-fileout	/Users/antti/Documents/Events.xml
+fileout	/Users/antti/Documents/Events.
 marshal	xml
 bufsize	100
 ```
-Here application specific configuration items are the `marshal` setting, which describes the format of the output which is produced. Currently only xml is supported. JSON should be easy to add since BaseLayer already uses JSON. `bufsize` determines how many file change objects at most are buffered and then marshalled to the output file. When more than 100 objects arrive (in this example), then the older objects are purged.
+Here application specific configuration items are the `marshal` setting, which describes the format of the output which is produced. Currently xml and json are supported. JSON was easy to add since BaseLayer already uses JSON for conversions. `bufsize` determines how many file change objects at most are buffered and then marshalled to the output file. When more than 100 objects arrive (in this example), then the older objects are purged. Note that `fileout` must end in dot (".") -- the `marshal` format is added to the end of the file when creating the file for output.
 
 This is an example of the xml file produced  by the last node from a real run of the system:
 
@@ -86,6 +86,8 @@ This is an example of the xml file produced  by the last node from a real run of
   </target>
 </targets>
 ```
+See also the SampleData subdirectory in the project. It contains an index.html page which parses Events.xml using javascript to display a table of file change events. See readme file in SampleData for details.
+
 ## Building
 
 First make sure all the external components have been installed:
@@ -114,4 +116,4 @@ And in the developer server, after configuring the .cfg file:
 ```
 ./DirWatchService ../LastNode.cfg
 ```
-All *you* need to do is to create the web service reading the XML file to show file changing awareness to developers.
+All *you* need to do is to create the web service reading the XML file to show file changing awareness to developers. A simple demo of this is in the SampleData subdirectory.
