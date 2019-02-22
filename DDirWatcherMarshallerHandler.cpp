@@ -30,7 +30,9 @@ namespace DirWatcher {
          using namespace tinyxml2;
          
          document.Clear();
-         
+         // It is easier to marshal objects to JSON (below in JSONMarshaller) since
+         // JSON support is already build in into DDirWatcherDataItem. So here
+         // we need to build the XML structure 'manually'.
          XMLElement * targets = document.NewElement("targets");
          
          for (DDirWatcherDataItem * item : buffer) {
@@ -84,12 +86,11 @@ namespace DirWatcher {
          using namespace nlohmann;
          jsonObj.clear();
          
-         json array_explicit = json::array();
          for (DDirWatcherDataItem * item : buffer) {
-            array_explicit.push_back(*item);
+            json object = *item;
+            jsonObj.push_back(object);
          }
-         jsonObj.push_back(array_explicit);
-         LOG(INFO) << "JSON tree created ";
+         LOG(INFO) << "JSON structure created ";
          return true;
       }
       
@@ -161,12 +162,12 @@ namespace DirWatcher {
       if (!didFind) {
          if (buffer.size() >= bufCapacity) {
             LOG(INFO) << "Buffer full, removing oldest data";
-            item = buffer.front();
+            item = buffer.back();
             delete item;
-            buffer.pop_front();
+            buffer.pop_back();
          }
          LOG(INFO) << "Adding new data item to buffer.";
-         buffer.push_back(item);
+         buffer.push_front(item);
       }
    }
    
