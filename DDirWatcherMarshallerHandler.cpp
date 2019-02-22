@@ -98,6 +98,7 @@ namespace DirWatcher {
          std::ofstream file;
          file.open(fileName, std::ios::trunc | std::ios::out);
          file << jsonObj;
+         file.close();
          return true;
       }
       
