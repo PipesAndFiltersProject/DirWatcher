@@ -1,0 +1,65 @@
+<targets>
+    <target name="/Users/antti/Downloads/DigitalClock/DigitalClock copy.cpp">
+        <users>
+            <user>antti</user>
+        </users>
+        <events>
+            <event type="Renamed">1</event>
+            <event type="IsFile">1</event>
+        </events>
+    </target>
+    <target name="/Users/antti/Downloads/DigitalClock/.DS_Store">
+        <users>
+            <user>antti</user>
+        </users>
+        <events>
+            <event type="PlatformSpecific">1</event>
+            <event type="Updated">1</event>
+            <event type="IsFile">1</event>
+        </events>
+    </target>
+    <target name="/Users/antti/Downloads/.DS_Store">
+        <users>
+            <user>antti</user>
+        </users>
+        <events>
+            <event type="PlatformSpecific">1</event>
+            <event type="Updated">1</event>
+            <event type="IsFile">1</event>
+            <event type="PlatformSpecific">1</event>
+            <event type="Updated">1</event>
+            <event type="IsFile">1</event>
+        </events>
+    </target>
+    <target name="/Users/antti/Downloads/cccc-3.pre48/makefile">
+        <users>
+            <user>antti</user>
+        </users>
+        <events>
+            <event type="IsFile">1</event>
+        </events>
+    </target>
+    <target name="/Users/antti/Downloads/cccc-3.pre48/makefile copy">
+        <users>
+            <user>antti</user>
+        </users>
+        <events>
+            <event type="IsFile">2</event>
+            <event type="Created">1</event>
+            <event type="PlatformSpecific">1</event>
+            <event type="OwnerModified">1</event>
+            <event type="IsFile">1</event>
+            <event type="Renamed">1</event>
+        </events>
+    </target>
+    <target name="/Users/antti/Downloads/cccc-3.pre48/.DS_Store">
+        <users>
+            <user>antti</user>
+        </users>
+        <events>
+            <event type="PlatformSpecific">1</event>
+            <event type="Updated">1</event>
+            <event type="IsFile">1</event>
+        </events>
+    </target>
+</targets>
