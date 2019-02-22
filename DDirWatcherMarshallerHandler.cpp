@@ -22,6 +22,7 @@
 
 namespace DirWatcher {
    
+   // MARK: XMLMarshaller
    class XMLMarshaller : public DDirWatcherMarshallerHandler::MarshallerInterface {
    public:
       virtual bool prepare(std::list<DDirWatcherDataItem*> & buffer) override {
@@ -74,7 +75,7 @@ namespace DirWatcher {
       tinyxml2::XMLDocument document;
    };
    
-
+   // MARK: - JSONMarshaller
    class JSONMarshaller : public DDirWatcherMarshallerHandler::MarshallerInterface {
    public:
       virtual bool prepare(std::list<DDirWatcherDataItem*> & buffer) override {
@@ -104,6 +105,7 @@ namespace DirWatcher {
       nlohmann::json jsonObj;
    };
 
+   // MARK: - DirWatcherHandler
    const std::string DDirWatcherMarshallerHandler::TAG{"WatcherMarshal "};
    
    DDirWatcherMarshallerHandler::DDirWatcherMarshallerHandler(OHARBase::ProcessorNode & node)
