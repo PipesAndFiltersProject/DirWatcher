@@ -37,9 +37,6 @@ namespace DirWatcher {
          
          for (DDirWatcherDataItem * item : buffer) {
             LOG(INFO) << TAG << "Buffer has " << buffer.size() << " data items.";
-            nlohmann::json j = *item;
-            std::string str = j.dump();
-            LOG(INFO) << str;
             
             XMLElement * target = document.NewElement("target");
             target->SetAttribute("name", item->getId().c_str());
