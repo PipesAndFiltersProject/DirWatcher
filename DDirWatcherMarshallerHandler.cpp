@@ -115,10 +115,14 @@ namespace DirWatcher {
          bufCapacity = std::stoi(bufSize);
       }
       const std::string format = myNode.getConfigItemValue("marshal");
+      LOG(INFO) << "Using marshaller " << format;
       if (format == "xml") {
          marshaller = std::unique_ptr<MarshallerInterface>(new XMLMarshaller());
       } else if (format == "json") {
          marshaller = std::unique_ptr<MarshallerInterface>(new JSONMarshaller());
+      } else {
+         LOG(WARNING) << "Unsupported or not specified marshaller in settings.";
+         throw std::runtime_error("No marshaller or unsupported marshaller");
       }
    }
    
