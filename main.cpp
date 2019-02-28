@@ -29,10 +29,15 @@ int main(int argc, const char * argv[])
          watcher.run();
       } catch (const std::exception & e) {
          LOG(INFO) << "Something went wrong: " << e.what();
+         std::cout << "**" << std::endl;
+         std::cout << "** Error in running the service!" << std::endl;
+         std::cout << "**  >> " << e.what() << std::endl;
+         std::cout << "**  >> See log for details" << std::endl;
+         std::cout << "**" << std::endl;
       }
    }
-   
    LOG(INFO) << "DDirWatcher" << "--- Node closed ---";
+   std::cout << "Ending service, bye!" << std::endl;
    return 0;
 }
 
