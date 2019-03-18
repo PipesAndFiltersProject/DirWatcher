@@ -50,7 +50,7 @@ namespace DirWatcher {
       for (const std::pair<std::string,int> & item : events) {
          for (std::pair<std::string,int> & localItem : changeEvents) {
             if (item.first == localItem.first) {
-               localItem.second++;
+               localItem.second += item.second;
                found = true;
                break;
             }
