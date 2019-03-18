@@ -35,6 +35,8 @@ namespace DirWatcher {
       const std::vector<std::string> & getWhoChanged() const;
       const std::vector<std::pair<std::string,int>> getChangeEvents() const;
       
+      static int itemCount;
+      
    private:
       
       std::vector<std::string> whoChanged;

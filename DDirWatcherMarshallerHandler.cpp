@@ -127,13 +127,19 @@ namespace DirWatcher {
    }
    
    DDirWatcherMarshallerHandler::~DDirWatcherMarshallerHandler() {
+      while (buffer.size() > 0) {
+         auto item = buffer.back();
+         delete item;
+         buffer.pop_back();
+      }
    }
    
    bool DDirWatcherMarshallerHandler::consume(OHARBase::Package & data) {
       
       DDirWatcherDataItem * item = nullptr;
       
-      item = dynamic_cast<DDirWatcherDataItem*>(data.getDataItem());
+      item = dynamic_cast<DDirWatcherDataItem*>(data.getDataItem()->copy());
+      data.setDataItem(nullptr);
       LOG(INFO) << "Starting to process incoming data item.";
       addOrUpdateDataItem(item);
       LOG(INFO) << "Preparing the objects for saving.";
@@ -156,6 +162,8 @@ namespace DirWatcher {
          if (*bufItem == * item) {
             LOG(INFO) << "Data item already existed, updating.";
             bufItem->addFrom(*item);
+            delete item;
+            item = nullptr;
             didFind = true;
             break;
          }
@@ -163,8 +171,8 @@ namespace DirWatcher {
       if (!didFind) {
          if (buffer.size() >= bufCapacity) {
             LOG(INFO) << "Buffer full, removing oldest data";
-            item = buffer.back();
-            delete item;
+            DDirWatcherDataItem * oldItem = buffer.back();
+            delete oldItem;
             buffer.pop_back();
          }
          LOG(INFO) << "Adding new data item to buffer.";

@@ -13,6 +13,7 @@
 #include <g3log/logworker.hpp>
 
 #include "DDirWatcher.hpp"
+#include "DDirWatcherDataItem.hpp"
 
 int main(int argc, const char * argv[])
 {
@@ -38,6 +39,9 @@ int main(int argc, const char * argv[])
    }
    LOG(INFO) << "DDirWatcher" << "--- Node closed ---";
    std::cout << "Ending service, bye!" << std::endl;
+   using namespace DirWatcher;
+   std::cout << "DataItemCount: " << DDirWatcherDataItem::itemCount << std::endl;
+   LOG(INFO) << "asdf COUNT " << DDirWatcherDataItem::itemCount;
    return 0;
 }
 

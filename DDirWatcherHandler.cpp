@@ -74,14 +74,14 @@ namespace DirWatcher {
                eventFlagNames.push_back(fsw::event::get_event_flag_name(flag));
             }
             LOG(INFO) << TAG << "Change in " << event.get_path();
-            std::unique_ptr<DDirWatcherDataItem> dataItem(new DDirWatcherDataItem);
-            dataItem->setId(event.get_path());
-            dataItem->addWhoChanged(myNode.getConfigItemValue("user"));
-            dataItem->addChangeEvents(eventFlagNames);
+            DDirWatcherDataItem dataItem;
+            dataItem.setId(event.get_path());
+            dataItem.addWhoChanged(myNode.getConfigItemValue("user"));
+            dataItem.addChangeEvents(eventFlagNames);
             LOG(INFO) << TAG << "Creating a Package";
             OHARBase::Package package;
             package.setType(OHARBase::Package::Type::Data);
-            package.setDataItem(dataItem.release());
+            package.setDataItem(&dataItem);
             LOG(INFO) << TAG << "Passing package to the handlers";
             myNode.passToNextHandlers(this, package);
          }

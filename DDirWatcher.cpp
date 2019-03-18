@@ -118,7 +118,7 @@ namespace DirWatcher {
       stdCoutMutex.unlock();
       if (e == ProcessorNodeObserver::EventType::ShutDownEvent) {
          LOG(INFO) << "Shutdown event";
-         std::streambuf* orig = std::cin.rdbuf();
+         //std::streambuf* orig = std::cin.rdbuf();
          LOG(INFO) << "Redirect cin to streambuf";
          std::cin.rdbuf(input.rdbuf());
          std::cin.sync();

@@ -33,9 +33,9 @@ namespace DirWatcher {
          LOG(INFO) << TAG << "** data received, handling! **";
          // parse data to a student data object
          nlohmann::json j = nlohmann::json::parse(data.getData());
-         DDirWatcherDataItem * item = new DDirWatcherDataItem(j.get<DirWatcher::DDirWatcherDataItem>());
+         DDirWatcherDataItem item = j.get<DirWatcher::DDirWatcherDataItem>();
          
-         data.setDataItem(item);
+         data.setDataItem(&item);
          data.setData("");
       }
       return false; // Always let others handle this data package too.
