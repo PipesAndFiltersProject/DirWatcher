@@ -55,6 +55,7 @@ namespace DirWatcher {
       running = false;
       directoryMonitor->stop();
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      monitorThread->join();
       delete directoryMonitor;
       delete monitorThread;
    }

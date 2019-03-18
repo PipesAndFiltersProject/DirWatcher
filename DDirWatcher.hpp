@@ -26,6 +26,9 @@ namespace DirWatcher {
       const std::string nodeName;
       const std::string configurationFile;
       OHARBase::ProcessorNode * node;
+      std::mutex stdCoutMutex;
+      std::istringstream input;
+
    };
    
 } // namespace
