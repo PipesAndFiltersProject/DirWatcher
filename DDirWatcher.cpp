@@ -54,7 +54,8 @@ namespace DirWatcher {
       }
       
       LOG(INFO) << "Starting the Node";
-      std::cout << "Node starting. When you want to shut it down, type \"quit\" or \"shutdown\" (closing all nodes) and press <enter>." << std::endl;
+      std::cout << "Node starting. When you want to shut it down, type \"quit\" or \"shutdown\" (closing all nodes) press <enter>." << std::endl;
+      std::cout << " typing \"ping\" <enter> sends a ping message to next node (if any)." << std::endl;
       node->start();
       
       // Start the input reading thread as a lambda function.
@@ -68,14 +69,13 @@ namespace DirWatcher {
                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                std::cin.clear();
                LOG(INFO) << "Input was: " << input;
-               if (input =="quit" || input == "shutdown") {
-                  LOG(INFO) << "Input was quit or shutdown so quitting node.";
+               if (input =="quit" || input == "shutdown" || input == "ping") {
+                  LOG(INFO) << "Input was a command so handling it.";
                   stdCoutMutex.lock();
-                  std::cout << "Stopping the Node..." << std::endl;
+                  std::cout << "Now " << input << "'ing the Node..." << std::endl;
                   stdCoutMutex.unlock();
                   node->handleCommand(input);
                   std::this_thread::sleep_for(std::chrono::milliseconds(500));
-                  // node->stop();
                } else if (input == "close") {
                   stdCoutMutex.lock();
                   std::cout << std::endl << "...closing..." << std::endl;
