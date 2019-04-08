@@ -26,7 +26,6 @@ namespace DirWatcher {
    class XMLMarshaller : public DDirWatcherMarshallerHandler::MarshallerInterface {
    public:
       virtual bool prepare(std::list<DDirWatcherDataItem*> & buffer) override {
-         const std::string TAG {"XMLMarshaller"};
          using namespace tinyxml2;
          
          document.Clear();
@@ -72,13 +71,16 @@ namespace DirWatcher {
       
    private:
       tinyxml2::XMLDocument document;
+      static const std::string TAG;
    };
+   
+   const std::string XMLMarshaller::TAG {"XMLMarshaller"};
+
    
    // MARK: - JSONMarshaller
    class JSONMarshaller : public DDirWatcherMarshallerHandler::MarshallerInterface {
    public:
       virtual bool prepare(std::list<DDirWatcherDataItem*> & buffer) override {
-         const std::string TAG {"JSONMarshaller"};
          
          using namespace nlohmann;
          jsonObj.clear();
@@ -102,8 +104,11 @@ namespace DirWatcher {
       
    private:
       nlohmann::json jsonObj;
+      static const std::string TAG;
    };
 
+   const std::string JSONMarshaller::TAG {"JSONMarshaller"};
+   
    // MARK: - DirWatcherHandler
    const std::string DDirWatcherMarshallerHandler::TAG{"WatcherMarshal "};
    
