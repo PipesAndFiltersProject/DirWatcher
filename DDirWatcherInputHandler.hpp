@@ -15,13 +15,12 @@ namespace DirWatcher {
    class DDirWatcherInputHandler : public OHARBase::DataHandler {
       
    public:
-      DDirWatcherInputHandler(OHARBase::ProcessorNode & node);
+      DDirWatcherInputHandler();
       virtual ~DDirWatcherInputHandler();
       
       bool consume(OHARBase::Package & data) override;
       
    private:
-      OHARBase::ProcessorNode & myNode;
       const static std::string TAG;
    };
    

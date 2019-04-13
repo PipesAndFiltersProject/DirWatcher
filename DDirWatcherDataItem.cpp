@@ -18,24 +18,16 @@ namespace DirWatcher {
    
    const std::string DDirWatcherDataItem::TAG{"DWDataItem "};
    
-   int DDirWatcherDataItem::itemCount = 0;
-   
    DDirWatcherDataItem::DDirWatcherDataItem() {
-      DDirWatcherDataItem::itemCount++;
-      LOG(INFO) << "asdf CREATE " << DDirWatcherDataItem::itemCount;
    }
    
    DDirWatcherDataItem::DDirWatcherDataItem(const DDirWatcherDataItem & another)
    : DataItem(another) {
       whoChanged = another.whoChanged;
       changeEvents = another.changeEvents;
-      DDirWatcherDataItem::itemCount++;
-      LOG(INFO) << "asdf CREATE " << DDirWatcherDataItem::itemCount;
    }
    
    DDirWatcherDataItem::~DDirWatcherDataItem() {
-      DDirWatcherDataItem::itemCount--;
-      LOG(INFO) << "asdf DESTROY " << DDirWatcherDataItem::itemCount;
    }
    
    void DDirWatcherDataItem::setWhoChanged(const std::vector<std::string> & names) {
@@ -109,8 +101,8 @@ namespace DirWatcher {
       return false;
    }
    
-   OHARBase::DataItem *DDirWatcherDataItem::copy() const {
-      return new DDirWatcherDataItem(*this);
+   std::unique_ptr<OHARBase::DataItem> DDirWatcherDataItem::clone() const {
+      return std::make_unique<DDirWatcherDataItem>(*this);
    }
 
    

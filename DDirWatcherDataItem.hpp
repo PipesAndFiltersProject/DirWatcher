@@ -23,7 +23,7 @@ namespace DirWatcher {
       
       bool parse(const std::string &, const std::string &) override;
       bool addFrom(const OHARBase::DataItem &another) override;
-      OHARBase::DataItem *copy() const override;
+      std::unique_ptr<OHARBase::DataItem> clone() const override;
       
       void setWhoChanged(const std::vector<std::string> & names);
       void addWhoChanged(const std::string & name);
@@ -34,8 +34,6 @@ namespace DirWatcher {
       
       const std::vector<std::string> & getWhoChanged() const;
       const std::vector<std::pair<std::string,int>> getChangeEvents() const;
-      
-      static int itemCount;
       
    private:
       

@@ -19,8 +19,7 @@ namespace DirWatcher {
    const std::string DDirWatcherInputHandler::TAG{"WatcherInput "};
    
    
-   DDirWatcherInputHandler::DDirWatcherInputHandler(OHARBase::ProcessorNode & node)
-   : myNode(node)
+   DDirWatcherInputHandler::DDirWatcherInputHandler()
    {
    }
    
@@ -33,9 +32,9 @@ namespace DirWatcher {
          LOG(INFO) << TAG << "** data received, handling! **";
          // parse data to a student data object
          nlohmann::json j = nlohmann::json::parse(data.getData());
-         DDirWatcherDataItem item = j.get<DirWatcher::DDirWatcherDataItem>();
+         std::unique_ptr<DDirWatcherDataItem> item = std::make_unique<DDirWatcherDataItem>(j.get<DirWatcher::DDirWatcherDataItem>());
          
-         data.setDataItem(&item);
+         data.setDataItem(std::move(item));
          data.setData("");
       }
       return false; // Always let others handle this data package too.

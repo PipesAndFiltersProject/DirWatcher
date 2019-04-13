@@ -39,7 +39,7 @@ namespace DirWatcher {
       node->configure(configurationFile);
       if (configurationFile.find("LastNode") != std::string::npos) {
          LOG(INFO) << "Adding Input handler.";
-         node->addHandler(new DDirWatcherInputHandler(*node));
+         node->addHandler(new DDirWatcherInputHandler());
       }
       if (node->getConfigItemValue("target").length() > 0) {
          LOG(INFO) << "Has target dir, adding dir watcher handler.";

@@ -143,37 +143,37 @@ namespace DirWatcher {
       
       DDirWatcherDataItem * item = nullptr;
       
-      item = dynamic_cast<DDirWatcherDataItem*>(data.getDataItem()->copy());
-      data.setDataItem(nullptr);
-      LOG(INFO) << "Starting to process incoming data item.";
-      addOrUpdateDataItem(item);
-      LOG(INFO) << "Preparing the objects for saving.";
-      if (marshaller->prepare(buffer)) {
-         LOG(INFO) << "Saving the objects.";
-         std::string fileName = myNode.getOutputFileName() + myNode.getConfigItemValue("marshal");
-         bool success = marshaller->save(fileName);
-         if (!success) {
-            LOG(WARNING) << "Saving the objects failed.";
+      item = dynamic_cast<DDirWatcherDataItem*>(data.getDataItem()->clone().release());
+      if (item) {
+         LOG(INFO) << "Starting to process incoming data item.";
+         addOrUpdateDataItem(item);
+         LOG(INFO) << "Preparing the objects for saving.";
+         if (marshaller->prepare(buffer)) {
+            LOG(INFO) << "Saving the objects.";
+            std::string fileName = myNode.getOutputFileName();
+            if (fileName[fileName.length()-1] != '.') {
+               fileName += ".";
+            }
+            fileName += myNode.getConfigItemValue("marshal");
+            bool success = marshaller->save(fileName);
+            if (!success) {
+               LOG(WARNING) << "Saving the objects failed.";
+            }
+         } else {
+            LOG(WARNING) << "Preparing the objects failed.";
          }
-      } else {
-         LOG(WARNING) << "Preparing the objects failed.";
       }
       return false;
    }
    
    void DDirWatcherMarshallerHandler::addOrUpdateDataItem(DDirWatcherDataItem * item) {
-      bool didFind = false;
-      for (DDirWatcherDataItem * bufItem : buffer) {
-         if (*bufItem == * item) {
-            LOG(INFO) << "Data item already existed, updating.";
-            bufItem->addFrom(*item);
-            delete item;
-            item = nullptr;
-            didFind = true;
-            break;
-         }
-      }
-      if (!didFind) {
+      auto iter = std::find(buffer.begin(), buffer.end(), item);
+      if (iter != buffer.end()) {
+         LOG(INFO) << "Data item already existed, updating.";
+         (*iter)->addFrom(*item);
+         delete item;
+         item = nullptr;
+      } else {
          if (buffer.size() >= bufCapacity) {
             LOG(INFO) << "Buffer full, removing oldest data";
             DDirWatcherDataItem * oldItem = buffer.back();
