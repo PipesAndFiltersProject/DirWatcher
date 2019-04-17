@@ -81,7 +81,7 @@ namespace DirWatcher {
             LOG(INFO) << TAG << "Creating a Package";
             OHARBase::Package package;
             package.setType(OHARBase::Package::Type::Data);
-            package.setDataItem(std::move(dataItem));
+            package.setPayload(std::move(dataItem));
             LOG(INFO) << TAG << "Passing package to the handlers";
             myNode.passToNextHandlers(this, package);
          }

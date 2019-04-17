@@ -30,7 +30,7 @@ namespace DirWatcher {
    bool DDirWatcherOutputHandler::consume(OHARBase::Package & data) {
       LOG(INFO) << TAG << "Starting to send a package";
       if (data.getType() == OHARBase::Package::Data) {
-         OHARBase::DataItem * item = data.getDataItem();
+         OHARBase::DataItem * item = data.getPayloadObject();
          // If the package contains the binary data object...
          if (item) {
             const DDirWatcherDataItem * eventItem = dynamic_cast<const DDirWatcherDataItem*>(item);
@@ -44,8 +44,7 @@ namespace DirWatcher {
                nlohmann::json j = *eventItem;
                std::string payload = j.dump();
                // ... set it as the data for the Package...
-               data.setData(payload);
-               data.setDataItem(nullptr);
+               data.setPayload(payload);
                LOG(INFO) << TAG << "...and telling the processornode to send it.";
                // ... and ask the Node to send the data to the next Node.
                myNode.sendData(data);
@@ -53,7 +52,7 @@ namespace DirWatcher {
          }
          return true; // data consumed, sent away. No need to pass along anymore.
       } else if (data.getType() == OHARBase::Package::Control)  {
-         LOG(INFO) << TAG << "Forwarding a command: " << data.getData();
+         LOG(INFO) << TAG << "Forwarding a command: " << data.getPayloadString();
          myNode.sendData(data);
          return true;
       }

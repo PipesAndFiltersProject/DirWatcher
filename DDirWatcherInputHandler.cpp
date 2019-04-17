@@ -28,14 +28,13 @@ namespace DirWatcher {
    
    bool DDirWatcherInputHandler::consume(OHARBase::Package & data) {
       using namespace OHARBase;
-      if (data.getType() == Package::Data && data.getData().length() > 0) {
+      if (data.getType() == Package::Data && data.getPayloadString().length() > 0) {
          LOG(INFO) << TAG << "** data received, handling! **";
          // parse data to a student data object
-         nlohmann::json j = nlohmann::json::parse(data.getData());
+         nlohmann::json j = nlohmann::json::parse(data.getPayloadString());
          std::unique_ptr<DDirWatcherDataItem> item = std::make_unique<DDirWatcherDataItem>(j.get<DirWatcher::DDirWatcherDataItem>());
          
-         data.setDataItem(std::move(item));
-         data.setData("");
+         data.setPayload(std::move(item));
       }
       return false; // Always let others handle this data package too.
    }

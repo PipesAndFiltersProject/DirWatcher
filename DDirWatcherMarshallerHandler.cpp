@@ -143,7 +143,7 @@ namespace DirWatcher {
       
       DDirWatcherDataItem * item = nullptr;
       
-      item = dynamic_cast<DDirWatcherDataItem*>(data.getDataItem()->clone().release());
+      item = dynamic_cast<DDirWatcherDataItem*>(data.getPayloadObject()->clone().release());
       if (item) {
          LOG(INFO) << "Starting to process incoming data item.";
          addOrUpdateDataItem(item);
