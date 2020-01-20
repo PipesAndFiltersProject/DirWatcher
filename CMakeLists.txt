@@ -30,10 +30,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(g3logger REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(fswatch REQUIRED)
-find_package(OHARBaseLayer REQUIRED)
 find_package(tinyxml2 REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
 
-target_include_directories(${BIN_NAME} PUBLIC ${g3log_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${tinyxml2_INCLUDE_DIRS})
+find_package(ProcessorNode REQUIRED)
 
-target_link_libraries(${BIN_NAME} ${g3log_LIBRARIES} ${fswatch_LIBRARIES} tinyxml2::tinyxml2 OHARBaseLayer::OHARBaseLayer)
+
+target_include_directories(${BIN_NAME} PUBLIC ${g3log_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${tinyxml2_INCLUDE_DIRS} ${ProcessorNode_INCLUDE_DIRS})
+
+target_link_libraries(${BIN_NAME} ${g3log_LIBRARIES} ${fswatch_LIBRARIES} tinyxml2::tinyxml2 ProcessorNode::ProcessorNode)
 

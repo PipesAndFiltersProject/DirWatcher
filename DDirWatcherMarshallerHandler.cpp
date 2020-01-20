@@ -13,8 +13,8 @@
 
 #include <nlohmann/json.hpp>
 
-#include <OHARBaseLayer/ProcessorNode.h>
-#include <OHARBaseLayer/Package.h>
+#include <ProcessorNode/ProcessorNode.h>
+#include <ProcessorNode/Package.h>
 
 #include "DDirWatcherMarshallerHandler.hpp"
 #include "DDirWatcherDataItem.hpp"

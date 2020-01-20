@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <OHARBaseLayer/ProcessorNode.h>
-#include <OHARBaseLayer/ProcessorNodeObserver.h>
+#include <ProcessorNode/ProcessorNode.h>
+#include <ProcessorNode/ProcessorNodeObserver.h>
 
 namespace DirWatcher {
    

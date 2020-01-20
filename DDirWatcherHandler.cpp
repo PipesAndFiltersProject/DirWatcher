@@ -12,8 +12,8 @@
 #include <libfswatch/c++/monitor.hpp>
 #include <libfswatch/c++/event.hpp>
 
-#include <OHARBaseLayer/ProcessorNode.h>
-#include <OHARBaseLayer/Package.h>
+#include <ProcessorNode/ProcessorNode.h>
+#include <ProcessorNode/Package.h>
 
 #include "DDirWatcherHandler.hpp"
 #include "DDirWatcherDataItem.hpp"
