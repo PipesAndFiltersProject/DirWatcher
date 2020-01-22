@@ -130,3 +130,13 @@ And in the developer server, after configuring the .cfg file:
 ./DirWatchService ../LastNode.cfg
 ```
 All *you* need to do is to create the web service reading the XML file to show file changing awareness to developers. A simple demo html page of this is in the SampleData subdirectory.
+
+
+## Who do I talk to? ##
+
+Repo is owned and maintained by Antti Juustila (antti.juustila at oulu.fi)
+
+## License ##
+
+(c) Antti Juustila 2014-2020. This software is licensed in [GPL version 2 or later](https://opensource.org/licenses/gpl-2.0.php).
+

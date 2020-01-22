@@ -34,7 +34,7 @@ namespace DirWatcher {
       LOG(INFO) << TAG << "Launching " << nodeName;
       LOG(INFO) << TAG << "Config file: " << configurationFile;
       
-      node = new ProcessorNode(nodeName, this);
+      node = new ProcessorNode(this);
       LOG(INFO) << "Configuring the node.";
       node->configure(configurationFile);
       if (configurationFile.find("LastNode") != std::string::npos) {
