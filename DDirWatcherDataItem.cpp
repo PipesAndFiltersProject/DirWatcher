@@ -123,7 +123,6 @@ namespace DirWatcher {
    }
    
    void from_json(const nlohmann::json & j, DDirWatcherDataItem & data) {
-      LOG(INFO) << "asdf PARSE ";
       data.setId(j.at("target"));
       
       if (j.find("users") != j.end()) {

@@ -1,19 +1,32 @@
 # DDirWatcher
 
-DDirWatcher is another demonstration of how `BaseLayer` can be used to create distributed systems based on the selected architectural style. It took about 2 working days (within 4-5 calendar days) to implement DDirWatcher. At least a half day was wasted in trying to get `boost::property_tree` to do the XML marshalling, so that time could have been saved if a wiser selection had been made in the beginning. After struggling with property_tree, I switched to using tinyxml2 library which was better in this case.
+## Background
 
-A usage scenario for DDirWatcher could be that a group of software developers in an office space want to be explicitly aware of who is working with which components (source code files) of the system. Of course you can always check the git for committed changes in the git server. But what about those changes which haven't yet been committed and pushed to central repository? So each developer installs the DDirWatcher node in the development machine. The directory with the source code is then set as the `target` to watch. A developer server hosts the last node. The last node then creates an XML file containing information about the changed files in different developer machines. This XML file is parsed in a dynamic web page. The dynamic page periodically refreshes the content of the page, including the most recent file changes in developers' local computers. The developer server has a large display/projector, which everyone can see. Thus, when having a break or coffee, developers see who is working on what. Those who are working remotely, can also view the web pagen if accessible from outside.
+DDirWatcher is a demonstration of how `ProcessorNode` component can be used to create distributed systems based on the selected architectural style. 
+
+It took about 2 working days (within 4-5 calendar days) to implement DDirWatcher. At least a half day was wasted in trying to get `boost::property_tree` to do the XML marshalling, so that time could have been saved if a wiser selection had been made in the beginning. After struggling with property_tree, I switched to using [tinyxml2](https://github.com/leethomason/tinyxml2) library which was better in this case.
+
+## Usage
+
+A group of software developers in an office space want to be explicitly aware of who is working with which components (source code files) of the system. Of course you can always check the git for committed changes in the git server. But what about those changes which haven't yet been committed and pushed to central repository? 
+
+Each developer installs the DDirWatcher node in the development machine. The directory with the source code is then set as the `target` to watch. A developer server in the premises hosts the last node. The last node then creates an XML file containing information about the changed files in different developer machines. This XML file is parsed by a dynamic web page. 
+
+The dynamic page periodically refreshes the content of the page, including the most recent file changes in developers' local computers. The developer server has a large display/projector, which everyone can see. Thus, when having a break or coffee, developers see who is working on what. Those who are working remotely, can also view the web page, if accessible from outside.
+
+## Architecture
 
 DDirWatcher implements a set of Nodes which can:
 
 - Observe a directory for changes; [libfswatch](https://github.com/emcrisostomo/fswatch/tree/master/libfswatch) is used for this.
 - When a change occurs in that directory (file is edited, deleted, created or accessed, etc.), a Package is sent to the next node.
-- Nodes can be chained one after each other. Or optionally, nodes can send Packages to a central Node.
+- Nodes can be chained one after each other. Or optionally, nodes can send Packages directly to the central Node on the local developer server.
 - Last or central Node then maintains an XML file about the changed files in different computers. This file could be included in a web page to display in real time the files changing in different computers.
 - Last node keeps e.g. 100 latest change info items and discards the older ones. Every time a new Package with change information arrives, the XML file is regenerated.
-- First node can be configured to send pings every now and then.
 
-There are also other than domain specific differences in DDirWatcher compared to StudentPassing. In DDirWatcher, nodes do not have a GUI. The nodes are started and then just left running without any user interaction. You can check out the `main.cpp` in the source code to see how a node in DDirWatcher is created and executed. Therefore, the only input to the nodes are from a) the file system changes and b) previous node(s), if any. In order to stop a Node you need to ctrl-c to kill it, or if executed with &, use kill command from the command prompt (or your environment's task manager to do it).
+There are also other than domain/application specific differences in DDirWatcher compared to StudentPassing:
+
+In DDirWatcher, nodes do not have a GUI. The nodes are started and then just left running without any user interaction. You can check out the `main.cpp` in the source code to see how a node in DDirWatcher is created and executed. Therefore, the only input to the nodes are from a) the file system changes and b) previous node(s), if any. In order to stop a Node you need to ctrl-c to kill it, or if executed with &, use kill command from the command prompt (or your environment's task manager to do it).
 
 In addition to boost, g3logger and nlohmann::json, this application also uses [tinyxml2](https://github.com/leethomason/tinyxml2) library for generating the XML output. nlohmann::json is used to create the json output file. See the CMakeLists.txt to check out the needed libraries. Note that in DDirWatcher, there is no library corresponding to StudentLayer, but the domain specific classes and the application related classes are in the same component, the executable.
 
@@ -40,7 +53,7 @@ Last node configuration example file looks like this:
 
 ```
 nodeconfiguration
-input	127.0.0.1:33333
+input	33333
 user	pentti
 fileout	/Users/antti/Documents/Events
 marshal	xml
