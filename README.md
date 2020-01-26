@@ -4,9 +4,10 @@
 
 DDirWatcher is a demonstration of how `ProcessorNode` component can be used to create distributed systems based on the selected architectural style. 
 
-It took about 2 working days (within 4-5 calendar days) to implement DDirWatcher. At least a half day was wasted in trying to get `boost::property_tree` to do the XML marshalling, so that time could have been saved if a wiser selection had been made in the beginning. After struggling with property_tree, I switched to using [tinyxml2](https://github.com/leethomason/tinyxml2) library which was better in this case.
+It took only about 2 work days (within 4-5 calendar days) to implement DDirWatcher on top of ProcessorNode. Obviously knowing ProcessorNode helped in the speedy development.
 
-## Usage
+
+## Usage scenario
 
 A group of software developers in an office space want to be explicitly aware of who is working with which components (source code files) of the system. Of course you can always check the git for committed changes in the git server. But what about those changes which haven't yet been committed and pushed to central repository? 
 
@@ -24,11 +25,17 @@ DDirWatcher implements a set of Nodes which can:
 - Last or central Node then maintains an XML file about the changed files in different computers. This file could be included in a web page to display in real time the files changing in different computers.
 - Last node keeps e.g. 100 latest change info items and discards the older ones. Every time a new Package with change information arrives, the XML file is regenerated.
 
-There are also other than domain/application specific differences in DDirWatcher compared to StudentPassing:
+DDirWatcher nodes do not have a GUI. The nodes are started and then just left running without any user interaction. You can check out the `main.cpp` in the source code to see how a node in DDirWatcher is created and executed. Therefore, the only input to the nodes are from a) the file system changes and b) previous node(s), if any. In order to stop a Node you need to ctrl-c to kill it, or if executed with &, use kill command from the command prompt (or your environment's task manager to do it).
 
-In DDirWatcher, nodes do not have a GUI. The nodes are started and then just left running without any user interaction. You can check out the `main.cpp` in the source code to see how a node in DDirWatcher is created and executed. Therefore, the only input to the nodes are from a) the file system changes and b) previous node(s), if any. In order to stop a Node you need to ctrl-c to kill it, or if executed with &, use kill command from the command prompt (or your environment's task manager to do it).
+In addition to Boost, g3logger and nlohmann::json, this application also uses [tinyxml2](https://github.com/leethomason/tinyxml2) library for generating the XML output. nlohmann::json is used to create the json output file. See the CMakeLists.txt to check out the needed libraries.
 
-In addition to boost, g3logger and nlohmann::json, this application also uses [tinyxml2](https://github.com/leethomason/tinyxml2) library for generating the XML output. nlohmann::json is used to create the json output file. See the CMakeLists.txt to check out the needed libraries. Note that in DDirWatcher, there is no library corresponding to StudentLayer, but the domain specific classes and the application related classes are in the same component, the executable.
+The domain specific classes and the application related classes are:
+
+* The `DDirWatcherDataItem` class is the application specific data object, extending `DataItem` from ProcessorNode library.
+* In the Leaf Nodes, the `DDirWatcherHandler` does the actual file system monitoring and produces file system change events as data item objects,,to be send ahead.
+* In the Leaf Nodes, the `DDirWatcherOutputHandler` provides the converts the data items to JSON and puts it into the package to be sent ahead to LastNode.
+* In the Last Node, the `DDirWatcherInputHandler` parses app specific payload from incoming JSON package, and finally,
+* in the Last Node, the `DDirWatcherMarshallerHandler` marshalls (or exports) the received data items as either XML or JSON, depending on configuration, to be used by a web app showing the file system events to users (XML only).
 
 ## Example configurations
 
@@ -105,10 +112,10 @@ See also the SampleData subdirectory in the project. It contains an index.html p
 
 First make sure all the external components have been installed:
 
-1. boost 1.68 or higher
+1. boost 1.70 or higher
 2. g3logger
 3. nlohmann::json
-4. OHARBaseLayer (requires C++17)
+4. ProcessorNode (requires C++17)
 5. tinyxml2
 6. libfswatch
 
@@ -132,11 +139,11 @@ And in the developer server, after configuring the .cfg file:
 All *you* need to do is to create the web service reading the XML file to show file changing awareness to developers. A simple demo html page of this is in the SampleData subdirectory.
 
 
-## Who do I talk to? ##
+## Who do I talk to?
 
 Repo is owned and maintained by Antti Juustila (antti.juustila at oulu.fi)
 
-## License ##
+## License
 
 (c) Antti Juustila 2014-2020. This software is licensed in [GPL version 2 or later](https://opensource.org/licenses/gpl-2.0.php).
 
