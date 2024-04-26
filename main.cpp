@@ -22,7 +22,9 @@ int main(int argc, const char * argv[])
    g3::initializeLogging(logworker.get());
 
    if (argc < 2) {
-      LOG(WARNING) << "DDirWatcher" << "No config file specified! Give config file name as startup parameter.";
+		const std::string msg{"DDirWatcher: No config file specified! Give config file name as startup parameter."};
+		LOG(WARNING) << msg;
+		std::cerr << msg;
    } else {
       try {
          using namespace DirWatcher;

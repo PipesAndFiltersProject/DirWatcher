@@ -39,7 +39,7 @@ set(SOURCES main.cpp
    DDirWatcherInputHandler.hpp DDirWatcherInputHandler.cpp
    DDirWatcherOutputHandler.hpp DDirWatcherOutputHandler.cpp
    DDirWatcherMarshallerHandler.hpp DDirWatcherMarshallerHandler.cpp
-   DDirWatcherDataItem.hpp DDirWatcherDataItem.cpp)
+   DDirWatcherDataItem.hpp DDirWatcherDataItem.cpp tinyxml2.cpp)
 
 add_executable(${BIN_NAME} ${SOURCES})
 
@@ -54,13 +54,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(g3log CONFIG REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(fswatch REQUIRED)
-find_package(tinyxml2 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
 
 find_package(ProcessorNode REQUIRED)
 
 
-target_include_directories(${BIN_NAME} PUBLIC ${g3logger_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${tinyxml2_INCLUDE_DIRS} ${ProcessorNode_INCLUDE_DIRS})
+target_include_directories(${BIN_NAME} PUBLIC ${g3logger_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${ProcessorNode_INCLUDE_DIRS})
 
-target_link_libraries(${BIN_NAME} ${g3logger_LIBRARIES} ${fswatch_LIBRARIES} tinyxml2::tinyxml2 ProcessorNode::ProcessorNode)
-
+target_link_libraries(${BIN_NAME} ${g3logger_LIBRARIES} ${fswatch_LIBRARIES} ProcessorNode::ProcessorNode)

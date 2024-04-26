@@ -119,6 +119,8 @@ First make sure all the external components have been installed:
 5. tinyxml2
 6. libfswatch
 
+Copy `tinyxml2.cpp` and `tinyxml2.h` into this project directory.
+
 Then in DDirWatcher:
 
 1. mkdir build
