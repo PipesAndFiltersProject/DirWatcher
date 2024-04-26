@@ -60,7 +60,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 find_package(ProcessorNode REQUIRED)
 
 
-target_include_directories(${BIN_NAME} PUBLIC ${g3log_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${tinyxml2_INCLUDE_DIRS} ${ProcessorNode_INCLUDE_DIRS})
+target_include_directories(${BIN_NAME} PUBLIC ${g3logger_INCLUDE_DIRS} ${fswatch_INCLUDE_DIRS} ${tinyxml2_INCLUDE_DIRS} ${ProcessorNode_INCLUDE_DIRS})
 
-target_link_libraries(${BIN_NAME} ${g3log_LIBRARIES} ${fswatch_LIBRARIES} tinyxml2::tinyxml2 ProcessorNode::ProcessorNode)
+target_link_libraries(${BIN_NAME} ${g3logger_LIBRARIES} ${fswatch_LIBRARIES} tinyxml2::tinyxml2 ProcessorNode::ProcessorNode)
 
