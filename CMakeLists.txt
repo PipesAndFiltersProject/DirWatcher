@@ -51,7 +51,7 @@ set_target_properties(${BIN_NAME} PROPERTIES LINK_FLAGS -pthread)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(g3logger REQUIRED)
+find_package(g3log CONFIG REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(fswatch REQUIRED)
 find_package(tinyxml2 REQUIRED)
